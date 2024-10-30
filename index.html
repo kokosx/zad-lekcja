@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        min-height: 100vh;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .layout {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      main {
+        display: flex;
+      }
+      * {
+        font-family: Verdana;
+        text-align: center;
+      }
+      header {
+        background-color: darkgreen;
+        color: white;
+        padding: 5px;
+      }
+      .left {
+        background-color: palegreen;
+        width: 30%;
+        height: 500px;
+      }
+      .right {
+        background-color: honeydew;
+        width: 70%;
+        height: 500px;
+        padding-top: 100px;
+      }
+      footer {
+        background-color: palegreen;
+        padding: 3px;
+      }
+      table,
+      td {
+        border: 1px solid darkgreen;
+        border-collapse: collapse;
+      }
+      table {
+        margin: auto;
+        width: 95%;
+      }
+      td,
+      th {
+        padding: 20px 0;
+      }
+      button {
+        background-color: darkgreen;
+        color: white;
+        padding: 5px;
+      }
+      button:hover {
+        background-color: honeydew;
+        color: darkgreen;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="layout">
+      <header>
+        <h1>Sieci komputerowe</h1>
+      </header>
+      <main>
+        <section class="left">
+          <h2>Aktualizacja i zamówienia materiałów</h2>
+          <p>Do wewnetrznego uzytku firmy</p>
+        </section>
+        <section class="right">
+          <table>
+            <thead>
+              <th>Produkt</th>
+              <th>Jednostka</th>
+              <th>Dostępna ilość</th>
+              <th>Aktualizacja</th>
+              <th>Zamówienie</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-name="1">skretka u/utp drut</td>
+                <td>metr</td>
+                <td data-id="1" class="ilosc">20</td>
+
+                <td>
+                  <button data-updateid="1" class="aktualizuj">
+                    Aktualizuj
+                  </button>
+                </td>
+                <td>
+                  <button data-orderid="1" class="order">Zamow</button>
+                </td>
+              </tr>
+              <tr>
+                <td data-name="2">skretka u/utp linka</td>
+                <td>metr</td>
+                <td data-id="2" class="ilosc">2</td>
+                <td>
+                  <button data-updateid="2" class="aktualizuj">
+                    Aktualizuj
+                  </button>
+                </td>
+                <td>
+                  <button data-orderid="2" class="order">Zamow</button>
+                </td>
+              </tr>
+              <tr>
+                <td data-name="3">wtyki 8p8c</td>
+                <td>sztuki</td>
+                <td data-id="3" class="ilosc">10</td>
+                <td>
+                  <button class="aktualizuj" data-updateid="3">
+                    Aktualizuj
+                  </button>
+                </td>
+                <td>
+                  <button data-orderid="3" class="order">Zamow</button>
+                </td>
+              </tr>
+              <tr>
+                <td data-name="4">moduly keystone</td>
+                <td>sztuki</td>
+                <td data-id="4" class="ilosc">30</td>
+                <td>
+                  <button class="aktualizuj" data-updateid="4">
+                    Aktualizuj
+                  </button>
+                </td>
+                <td>
+                  <button data-orderid="4" class="order">Zamow</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+      <footer>
+        <a href="http:sieci.pl/" target="_blank">Nasza strona internetowa</a>
+        <p>Strone przygotowal: ja</p>
+      </footer>
+    </div>
+  </body>
+  <script>
+    let orders = 0;
+    const pointMissing = () => {
+      const missing = Array.from(document.querySelectorAll(".ilosc"));
+      missing.forEach((e) => {
+        const val = Number(e.innerText);
+        if (val == 0) {
+          e.style.backgroundColor = "red";
+        } else if (val >= 1 && val <= 5) {
+          e.style.backgroundColor = "yellow";
+        } else {
+          e.style.backgroundColor = "honeydew";
+        }
+      });
+    };
+    pointMissing();
+
+    const update = (el) => {
+      const id = el.dataset.updateid;
+
+      const val = prompt("Podaj nową ilość");
+      document.querySelector(`td[data-id='${id}']`).textContent = val;
+    };
+
+    const order = (el) => {
+      const id = el.dataset.orderid;
+      const name = document.querySelector(`td[data-name='${id}']`).textContent;
+      alert(`Zamowienie nr: ${orders} Produkt: ${name}`);
+    };
+
+    const updateButtons = Array.from(document.querySelectorAll(".aktualizuj"));
+    updateButtons.forEach((el) => {
+      el.addEventListener("click", () => {
+        update(el);
+        pointMissing();
+      });
+    });
+
+    const orderButtons = Array.from(document.querySelectorAll(".order"));
+
+    orderButtons.forEach((el) => {
+      el.addEventListener("click", () => {
+        orders++;
+        order(el);
+        pointMissing();
+      });
+    });
+  </script>
+</html>
